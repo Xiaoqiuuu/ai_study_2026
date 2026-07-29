@@ -24,4 +24,5 @@
 3. **手写 Transformer**：从零实现 Multi-Head Attention
 
 ## 联系方式
-- 邮箱：你的邮箱
+- 邮箱：xiaoqiu@zju.edu.cn
+
