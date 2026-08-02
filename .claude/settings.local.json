@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd *)",
+      "Bash(mv 期末复习 \"08_复习与考试/\")",
+      "Bash(mv 作业模板 \"07_论文与作业模板/\")",
+      "Bash(grep '~\\\\$')",
+      "Bash(mv Mathematical_Modeling/Mathematical_Modeling/* Mathematical_Modeling/)",
+      "Bash(rmdir Mathematical_Modeling/Mathematical_Modeling)",
+      "Bash(mv 作业模板/* .)",
+      "Bash(rmdir 作业模板)",
+      "Bash(mv Ubuntu22.04安装教程/* .)",
+      "Bash(rmdir Ubuntu22.04安装教程)",
+      "Bash(mv Mathematical_Modeling/* .)",
+      "Bash(rmdir Mathematical_Modeling)",
+      "Bash(rm -f \"/mnt/d/大学文件/04_通识与思政课程/现代中外关系/~$中外关系 课堂展示历史剧剧本.docx\")",
+      "Bash(rm -f \"/mnt/d/大学文件/04_通识与思政课程/现代中外关系/~$中外关系2023课程考核要求.docx\")"
+    ]
+  }
+}
