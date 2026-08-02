@@ -206,10 +206,46 @@
 
 ---
 
-## Day 4: Pytorch Autograd + LLM promot
+# 面试题整理
 
-### Q1: Pytorch的 grad 为什么会累加？
-**答**:
+## Day 4：PyTorch Autograd + LLM Prompt
+
+### Q1：PyTorch 的 grad 为什么会累加？
+**答**：默认累加是为了支持梯度累积（大 batch 训练）和多任务学习。
+标准三步：optimizer.zero_grad() → loss.backward() → optimizer.step()
+
+### Q2：为什么 System Prompt 比 User Prompt 控制力强？
+**答**：System 位于序列前端，在 Transformer 多层 Attention 中反复传播，
+持续影响后续所有 token 的条件概率分布。
+
+### Q3：Few-shot Prompt 为什么有效？
+**答**：不是模型"理解"了规则，而是 Few-shot 例子提供了条件概率的锚点，
+诱导模型进入训练数据中相似的模式区域。
+
+### Q4：Sigmoid 为什么不适合多分类？
+**答**：Sigmoid 输出独立概率，各类概率之和不为 1。多分类用 Softmax，
+它通过指数归一化保证概率和为 1，且放大差异。
+
+### Q5：L1 和 L2 正则化的几何区别？
+**答**：L1 约束是菱形（顶点在坐标轴），最优解容易落在顶点 → 稀疏。
+L2 约束是圆形，最优解在边界任意位置 → 权重平滑小。
  
+## Day 5：PyTorch nn.Module + 反向传播
+
+### Q1：nn.Module 的 `__init__` 和 `forward` 分别做什么？为什么必须继承 nn.Module？
+**答**：`__init__` 定义网络结构（层），`forward` 定义前向计算流程。继承 nn.Module 后，PyTorch 会自动追踪所有 `nn.Parameter`，支持 `model.parameters()` 传给优化器，自动管理 GPU 搬运和状态保存。
+
+### Q2：`model.train()` 和 `model.eval()` 有什么区别？忘记调用会怎样？
+**答**：`train()` 启用 Dropout（随机丢弃神经元）和 BatchNorm 使用批次统计量；`eval()` 关闭 Dropout，BatchNorm 使用全局统计量。如果测试时忘记 `eval()`，Dropout 会随机丢弃神经元，导致同一输入每次预测结果不同，准确率暴跌。
+
+### Q3：CrossEntropyLoss 的输入需要经过 softmax 吗？为什么？
+**答**：不需要。`nn.CrossEntropyLoss` 内部已经集成了 `LogSoftmax + NLLLoss`，数值稳定性更好。如果先手动 softmax 再传进去，会导致对数概率经过两次 log/exp，数值不稳定且结果错误。
+
+### Q4：什么是梯度消失？Sigmoid 为什么会导致梯度消失？ReLU 为什么能缓解？
+**答**：反向传播时，梯度从输出层向输入层逐层传递，每经过一层要乘以该层的局部导数。Sigmoid 的导数最大值为 0.25，多层连乘后梯度指数级衰减到接近 0，前面几层几乎不更新。ReLU 在正区间的导数为 1，梯度可以无损传递，缓解了消失问题。
+
+### Q5：momentum（动量）在 SGD 中的作用是什么？
+**答**：模拟物理中的动量概念。更新参数时不仅考虑当前梯度，还累积之前梯度的指数加权平均。作用：1）加速收敛（在一致方向上积累速度）；2）抑制震荡（抵消垂直于最优方向的噪声）。
+
 
 > **使用建议**：每天睡前抽 3 道题，对着镜子讲一遍。卡住的地方就是明天的复习重点。
