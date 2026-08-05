@@ -1,0 +1,41 @@
+# CIFAR-10 ResNet18 Fine-tuning Configuration
+seed: 42
+device: "cuda"
+
+# Data (CIFAR-10: 32x32 RGB)
+data_dir: "./data"
+batch_size: 128
+num_workers: 4
+pin_memory: true
+num_classes: 10
+
+# Model
+model_name: "resnet18"
+pretrained: true
+freeze_backbone: true          # 冻结前3层，只训练layer4+fc
+unfreeze_layer: "layer4"       # 从哪一层开始解冻
+
+# Training
+epochs: 50
+lr: 1.0e-3
+weight_decay: 5.0e-4
+scheduler: "cosine"            # cosine / step
+scheduler_step: 30             # 仅 step 有效
+scheduler_gamma: 0.1           # 仅 step 有效
+label_smoothing: 0.1
+early_stopping_patience: 10
+
+# Optimization
+use_amp: true                  # 混合精度，省显存
+grad_clip: 1.0                 # 梯度裁剪
+
+# Logging & Checkpoint
+log_interval: 50
+val_interval: 1
+checkpoint_dir: "./checkpoints"
+use_tensorboard: true
+runs_dir: "./runs"
+
+# Reproducibility
+deterministic: true
+benchmark: false
